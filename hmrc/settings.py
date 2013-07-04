@@ -6,10 +6,6 @@
 #     http://doc.scrapy.org/topics/settings.html
 #
 
-BOT_NAME = 'hmrc'
-BOT_VERSION = '1.0'
-
 SPIDER_MODULES = ['hmrc.spiders']
 NEWSPIDER_MODULE = 'hmrc.spiders'
-USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
 
