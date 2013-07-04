@@ -30,6 +30,8 @@ IGNORED_EXTENSIONS = [
 def my_canonicalize_url(url):
     url = canonicalize_url(url)
     scheme, netloc, path, params, query, fragment = parse_url(url)
+    # case sensitivity
+    path = path.lower()
     # Fix manuals links with multiple slashes
     path = re.sub(r'^/+', '/', path)
     # Fix customs.hmrc with session tokens in path (!?)
