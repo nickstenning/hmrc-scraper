@@ -451,7 +451,7 @@ class HmrcSpider(CrawlSpider):
                 head = hxs.select('//h2/text()').extract()[0]
             except IndexError:
                 try:
-                    head = hxs.select('//h2/text()').extract()[0]
+                    head = hxs.select('//h3/text()').extract()[0]
                 except IndexError:
                     head = '[none]'
 
