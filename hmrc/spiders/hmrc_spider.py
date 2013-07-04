@@ -8,6 +8,25 @@ from scrapy.utils.url import canonicalize_url, parse_url
 
 from hmrc.items import HmrcItem
 
+IGNORED_EXTENSIONS = [
+    # images
+    'mng', 'pct', 'bmp', 'gif', 'jpg', 'jpeg', 'png', 'pst', 'psp', 'tif',
+    'tiff', 'ai', 'drw', 'dxf', 'eps', 'ps', 'svg',
+
+    # audio
+    'mp3', 'wma', 'ogg', 'wav', 'ra', 'aac', 'mid', 'au', 'aiff',
+
+    # video
+    '3gp', 'asf', 'asx', 'avi', 'mov', 'mp4', 'mpg', 'qt', 'rm', 'swf', 'wmv',
+    'm4a',
+
+    # office suites
+    #'xls', 'ppt', 'doc', 'docx', 'odt', 'ods', 'odg', 'odp',
+
+    # other
+    'css', #'pdf', 'doc', 'exe', 'bin', 'rss', 'zip', 'rar',
+]
+
 def my_canonicalize_url(url):
     url = canonicalize_url(url)
     scheme, netloc, path, params, query, fragment = parse_url(url)
@@ -395,12 +414,23 @@ class HmrcSpider(CrawlSpider):
     ]
 
     rules = (
-        Rule(CanonicalizingLinkExtractor(), 'parse_page', follow=True),
+        Rule(CanonicalizingLinkExtractor(deny=(r'TellAFriend',),
+                                         deny_extensions=IGNORED_EXTENSIONS),
+             callback='parse_page',
+             follow=True),
     )
 
 
     def parse_page(self, response):
-        hxs = HtmlXPathSelector(response)
+        try:
+            hxs = HtmlXPathSelector(response)
+
+        except AttributeError:
+            # Not an HTML document: PDF/DOC or similar
+            item = HmrcItem()
+            item['url'] = response.url
+            return item
+
         try:
             title = hxs.select('//title/text()').extract()[0]
         except IndexError:
