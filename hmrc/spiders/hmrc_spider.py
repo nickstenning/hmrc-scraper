@@ -30,8 +30,6 @@ IGNORED_EXTENSIONS = [
 def my_canonicalize_url(url):
     url = canonicalize_url(url)
     scheme, netloc, path, params, query, fragment = parse_url(url)
-    # case sensitivity
-    path = path.lower()
     # www.hmrc.gov.uk and hmrc.gov.uk are the same
     if netloc == 'hmrc.gov.uk':
         netloc = 'www.hmrc.gov.uk'
