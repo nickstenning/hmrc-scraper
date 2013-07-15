@@ -53,6 +53,8 @@ class HmrcSpider(CrawlSpider):
     name = "hmrc"
     allowed_domains = ["www.hmrc.gov.uk", "customs.hmrc.gov.uk", "search2.hmrc.gov.uk"]
     start_urls = [
+        "http://customs.hmrc.gov.uk/maint/",
+        "http://customs.hmrc.gov.uk/channelsPortalWebApp/channelsPortalWebApp.portal",
         "http://www.hmrc.gov.uk/",
         "http://www.hmrc.gov.uk/about/accessibility.htm",
         "http://www.hmrc.gov.uk/about/foi.htm",
